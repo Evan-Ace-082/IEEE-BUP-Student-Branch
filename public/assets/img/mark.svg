@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="BUP IEEE">
+  <rect width="64" height="64" rx="14" fill="#00629B"/>
+  <path d="M32 10 50 32 32 54 14 32Z" fill="none" stroke="#F4E3BE" stroke-width="3"/>
+  <text x="32" y="37" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="white">IEEE</text>
+</svg>

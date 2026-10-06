@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Requests;
+
+use App\Support\HumanCheck;
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreContactRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:120'],
+            'email' => ['required', 'email', 'max:160'],
+            'subject' => ['required', 'string', 'max:160'],
+            'message' => ['required', 'string', 'max:5000'],
+            'human_answer' => ['required', 'string', 'max:10'],
+            'company_website' => ['prohibited'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'company_website.prohibited' => 'The form could not be submitted.',
+        ];
+    }
+
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            if (! HumanCheck::passes($this->input('human_answer'))) {
+                $validator->errors()->add('human_answer', 'Enter the correct answer to the addition check.');
+            }
+        });
+    }
+}
