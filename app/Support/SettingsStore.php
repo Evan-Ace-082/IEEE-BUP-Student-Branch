@@ -154,6 +154,11 @@ class SettingsStore
                 'group' => 'about',
                 'body' => 'Add the confirmed branch history here. This starter text is intentionally general so dates, charter details, and milestones are published only after the committee verifies them.',
             ],
+            'about.leadership' => [
+                'title' => 'Faculty & Club Leadership introduction',
+                'group' => 'about',
+                'body' => 'Faculty advisors and moderators are listed here after the branch confirms each profile. Names, photographs, and contact details stay unpublished until an administrator adds them.',
+            ],
             'membership.why' => [
                 'title' => 'Why join IEEE',
                 'group' => 'membership',

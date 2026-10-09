@@ -10,6 +10,7 @@
         ['Resources', 'admin.resources.index', 'admin.resources.*'],
         ['Members', 'admin.members.index', 'admin.members.*'],
         ['Committee', 'admin.committee.index', 'admin.committee.*'],
+        ['Faculty leadership', 'admin.leadership.index', 'admin.leadership.*'],
         ['Messages', 'admin.messages.index', 'admin.messages.*'],
         ['Website content', 'admin.content.edit', 'admin.content.*'],
         ['Reports', 'admin.reports.index', 'admin.reports.*'],

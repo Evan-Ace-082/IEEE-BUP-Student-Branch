@@ -36,4 +36,41 @@
         </div>
     </div>
 </section>
+<section class="section">
+    <div class="container">
+        <h2 class="mb-3">Faculty &amp; Club Leadership</h2>
+        @foreach (content_paragraphs(page_content('about.leadership')) as $line)
+            <p class="muted">{{ $line }}</p>
+        @endforeach
+        <div class="row g-4 mt-1">
+            @foreach ($leadership as $person)
+                <div class="col-md-6 col-lg-4">
+                    <article class="person-card">
+                        <div class="row g-0">
+                            <div class="col-4">
+                                @if ($person['photo'])
+                                    <img src="{{ public_file_url($person['photo']) }}" alt="Photo of {{ $person['name'] }}" style="height:100%;min-height:140px">
+                                @else
+                                    <div class="avatar-fallback initials" style="min-height:140px;height:100%">{{ $person['placeholder'] ? '?' : strtoupper(mb_substr($person['name'], 0, 1)) }}</div>
+                                @endif
+                            </div>
+                            <div class="col-8"><div class="body">
+                                <h3 class="h5 mb-1">{{ $person['name'] }}</h3>
+                                <p class="mb-1"><strong>{{ $person['designation'] }}</strong></p>
+                                @if ($person['bio'])<p class="small">{{ $person['bio'] }}</p>@endif
+                                @if ($person['email'] || $person['phone'])
+                                    <p class="small mb-0">
+                                        @if ($person['email'])<span>{{ $person['email'] }}</span>@endif
+                                        @if ($person['email'] && $person['phone'])<span> · </span>@endif
+                                        @if ($person['phone'])<span>{{ $person['phone'] }}</span>@endif
+                                    </p>
+                                @endif
+                            </div></div>
+                        </div>
+                    </article>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
 @endsection

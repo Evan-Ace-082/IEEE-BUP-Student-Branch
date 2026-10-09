@@ -2,6 +2,7 @@
 @section('title', 'Website content')
 @section('heading', 'Website content')
 @section('content')
+<p class="muted">Faculty and club leadership profiles are managed on <a href="{{ route('admin.leadership.index') }}">Faculty leadership</a>. The introduction shown above those profiles is edited with the other About Us text below.</p>
 <form method="POST" action="{{ route('admin.content.update') }}">
     @csrf @method('PUT')
     @foreach ($contents as $group => $items)

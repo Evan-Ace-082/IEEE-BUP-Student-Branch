@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+use App\Http\Controllers\Admin\LeadershipProfileController as AdminLeadershipController;
 use App\Http\Controllers\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
@@ -156,6 +157,7 @@ Route::middleware(['auth', 'verified', 'account.active', 'role:admin,super_admin
     Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
 
     Route::get('/logs', [ActivityLogController::class, 'index'])->name('logs.index');
+    Route::resource('leadership', AdminLeadershipController::class)->except(['show'])->parameters(['leadership' => 'profile'])->middlewareFor(['store', 'update'], 'throttle:uploads');
     Route::get('/content', [ContentController::class, 'edit'])->name('content.edit');
     Route::put('/content', [ContentController::class, 'update'])->name('content.update');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

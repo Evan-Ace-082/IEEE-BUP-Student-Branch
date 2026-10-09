@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Models\LeadershipProfile;
 
 class AboutController extends Controller
 {
     public function __invoke()
     {
-        return view('public.about');
+        return view('public.about', [
+            'leadership' => LeadershipProfile::publicEntries(),
+        ]);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\LeadershipProfile;
 use App\Models\MemberProfile;
 use App\Models\User;
+use App\Policies\LeadershipProfilePolicy;
 use App\Policies\MemberProfilePolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(MemberProfile::class, MemberProfilePolicy::class);
+        Gate::policy(LeadershipProfile::class, LeadershipProfilePolicy::class);
 
         RateLimiter::for('browse', function (Request $request) {
             return Limit::perMinute(12000)->by($request->ip());
