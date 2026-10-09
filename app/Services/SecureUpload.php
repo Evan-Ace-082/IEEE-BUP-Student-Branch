@@ -58,6 +58,40 @@ class SecureUpload
         return $relative;
     }
 
+    public static function pdf(UploadedFile $file, string $directory): string
+    {
+        self::assertSafeClientName($file);
+
+        $path = $file->getRealPath();
+        if ($path === false || ! is_file($path)) {
+            throw ValidationException::withMessages(['file' => 'The uploaded file could not be read.']);
+        }
+
+        if (strtolower($file->getClientOriginalExtension()) !== 'pdf') {
+            throw ValidationException::withMessages(['file' => 'Upload a PDF file.']);
+        }
+
+        if ($file->getSize() > 8 * 1024 * 1024) {
+            throw ValidationException::withMessages(['file' => 'PDF files must be 8 MB or smaller.']);
+        }
+
+        $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($path) ?: '';
+        $head = (string) file_get_contents($path, false, null, 0, 1024);
+        if (! str_starts_with($head, '%PDF-') || str_contains($head, '<?php') || str_contains(strtolower($head), '<script')) {
+            throw ValidationException::withMessages(['file' => 'The PDF file is not valid.']);
+        }
+
+        if (! in_array($mime, ['application/pdf', 'application/octet-stream'], true)) {
+            throw ValidationException::withMessages(['file' => 'Upload a PDF file.']);
+        }
+
+        $name = Str::uuid()->toString().'.pdf';
+        $relative = trim($directory, '/').'/'.$name;
+        Storage::disk('local')->put($relative, (string) file_get_contents($path));
+
+        return $relative;
+    }
+
     public static function document(UploadedFile $file, string $directory): string
     {
         self::assertSafeClientName($file);

@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\ResearchPaperController as AdminResearchPaperController;
 use App\Http\Controllers\Admin\ResourceController as AdminResourceController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -36,10 +37,16 @@ use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\MemberDirectoryController;
 use App\Http\Controllers\Public\MembershipController;
+use App\Http\Controllers\Public\ResearchPaperController;
 use App\Http\Controllers\Public\ResourceController;
 use App\Http\Controllers\SuperAdmin\AdminUserController;
 use App\Http\Controllers\SuperAdmin\SettingController;
 use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth', 'verified', 'account.active'])->group(function () {
+    Route::get('/research-papers/submit', [ResearchPaperController::class, 'create'])->name('research-papers.create');
+    Route::post('/research-papers', [ResearchPaperController::class, 'store'])->middleware('throttle:uploads')->name('research-papers.store');
+});
 
 Route::middleware('throttle:browse')->group(function () {
     Route::get('/', HomeController::class)->name('home');
@@ -53,6 +60,9 @@ Route::middleware('throttle:browse')->group(function () {
     Route::get('/achievements/{achievement}', [AchievementController::class, 'show'])->name('achievements.show');
     Route::get('/members', [MemberDirectoryController::class, 'index'])->name('members.index');
     Route::get('/members/{user}', [MemberDirectoryController::class, 'show'])->name('members.show');
+    Route::get('/research-papers', [ResearchPaperController::class, 'index'])->name('research-papers.index');
+    Route::get('/research-papers/{paper}/pdf', [ResearchPaperController::class, 'pdf'])->where('paper', '[A-Za-z0-9\-]+')->name('research-papers.pdf');
+    Route::get('/research-papers/{paper}', [ResearchPaperController::class, 'show'])->where('paper', '[A-Za-z0-9\-]+')->name('research-papers.show');
     Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
     Route::get('/resources/{resource}/download', [ResourceController::class, 'download'])->name('resources.download');
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
@@ -158,6 +168,14 @@ Route::middleware(['auth', 'verified', 'account.active', 'role:admin,super_admin
 
     Route::get('/logs', [ActivityLogController::class, 'index'])->name('logs.index');
     Route::resource('leadership', AdminLeadershipController::class)->except(['show'])->parameters(['leadership' => 'profile'])->middlewareFor(['store', 'update'], 'throttle:uploads');
+    Route::get('/research-papers', [AdminResearchPaperController::class, 'index'])->name('research-papers.index');
+    Route::get('/research-papers/{researchPaper}', [AdminResearchPaperController::class, 'show'])->name('research-papers.show');
+    Route::put('/research-papers/{researchPaper}', [AdminResearchPaperController::class, 'update'])->middleware('throttle:uploads')->name('research-papers.update');
+    Route::post('/research-papers/{researchPaper}/approve', [AdminResearchPaperController::class, 'approve'])->name('research-papers.approve');
+    Route::post('/research-papers/{researchPaper}/reject', [AdminResearchPaperController::class, 'reject'])->name('research-papers.reject');
+    Route::post('/research-papers/{researchPaper}/publish', [AdminResearchPaperController::class, 'publish'])->name('research-papers.publish');
+    Route::post('/research-papers/{researchPaper}/unpublish', [AdminResearchPaperController::class, 'unpublish'])->name('research-papers.unpublish');
+    Route::delete('/research-papers/{researchPaper}', [AdminResearchPaperController::class, 'destroy'])->name('research-papers.destroy');
     Route::get('/content', [ContentController::class, 'edit'])->name('content.edit');
     Route::put('/content', [ContentController::class, 'update'])->name('content.update');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

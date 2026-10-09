@@ -8,6 +8,7 @@
         ['Achievements', 'achievements.index', 'achievements.*'],
         ['Members', 'members.index', 'members.*'],
         ['Resources', 'resources.index', 'resources.*'],
+        ['Research Papers', 'research-papers.index', 'research-papers.*'],
         ['Gallery', 'gallery.index', 'gallery.*'],
         ['Membership', 'membership', 'membership'],
         ['Contact', 'contact', 'contact'],

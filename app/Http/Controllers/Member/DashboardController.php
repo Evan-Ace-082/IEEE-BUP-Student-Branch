@@ -20,6 +20,7 @@ class DashboardController extends Controller
             'upcoming' => $upcoming,
             'registrations' => $user->registrations->sortByDesc('id')->take(5),
             'achievements' => $user->submittedAchievements->sortByDesc('id')->take(5),
+            'papers' => $user->researchPapers()->latest()->limit(5)->get(),
         ]);
     }
 }

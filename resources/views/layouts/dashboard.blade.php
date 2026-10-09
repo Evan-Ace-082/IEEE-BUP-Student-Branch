@@ -8,6 +8,7 @@
         ['Achievements', 'admin.achievements.index', 'admin.achievements.*'],
         ['Gallery', 'admin.gallery.index', 'admin.gallery.*'],
         ['Resources', 'admin.resources.index', 'admin.resources.*'],
+        ['Research papers', 'admin.research-papers.index', 'admin.research-papers.*'],
         ['Members', 'admin.members.index', 'admin.members.*'],
         ['Committee', 'admin.committee.index', 'admin.committee.*'],
         ['Faculty leadership', 'admin.leadership.index', 'admin.leadership.*'],

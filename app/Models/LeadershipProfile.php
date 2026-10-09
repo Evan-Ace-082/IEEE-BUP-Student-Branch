@@ -9,8 +9,10 @@ class LeadershipProfile extends Model
 {
     protected $fillable = [
         'role',
+        'position_label',
         'name',
         'designation',
+        'department',
         'bio',
         'photo',
         'email',
@@ -45,6 +47,7 @@ class LeadershipProfile extends Model
             'faculty_advisor' => 'Faculty Advisor',
             'moderator' => 'Moderator',
             'co_moderator' => 'Co-Moderator',
+            'other' => 'Other faculty position',
         ];
     }
 
@@ -108,12 +111,18 @@ class LeadershipProfile extends Model
 
     private static function entryFromProfile(self $profile): array
     {
+        $roleLabel = $profile->role === 'other'
+            ? (trim((string) $profile->position_label) !== '' ? $profile->position_label : 'Faculty')
+            : (self::roleOptions()[$profile->role] ?? 'Leadership');
         $designation = trim((string) $profile->designation);
+        $department = trim((string) $profile->department);
 
         return [
             'placeholder' => false,
             'name' => $profile->name,
-            'designation' => $designation !== '' ? $designation : (self::roleOptions()[$profile->role] ?? 'Leadership'),
+            'designation' => $designation !== '' ? $designation : $roleLabel,
+            'role_label' => $roleLabel,
+            'department' => $department !== '' ? $department : null,
             'bio' => trim((string) $profile->bio) !== ''
                 ? $profile->bio
                 : 'Biography will be added when the branch publishes this profile.',
@@ -129,6 +138,8 @@ class LeadershipProfile extends Model
             'placeholder' => true,
             'name' => 'To be announced',
             'designation' => self::roleOptions()[$role] ?? 'Leadership',
+            'role_label' => self::roleOptions()[$role] ?? 'Leadership',
+            'department' => null,
             'bio' => 'Biography will be added when the branch publishes this profile.',
             'photo' => null,
             'email' => null,

@@ -25,4 +25,12 @@
         @endforelse
     </div>
 </div>
+<div class="mt-4">
+    <h2 class="h5">Your research papers</h2>
+    @forelse ($papers as $paper)
+        <p><a href="{{ route('research-papers.show', $paper->slug) }}">{{ $paper->title }}</a> · <span class="badge status-{{ $paper->review_status }}">{{ $paper->reviewLabel() }}</span>@if($paper->review_status === 'approved') · {{ $paper->is_published ? 'Published' : 'Unpublished' }}@endif</p>
+    @empty
+        <p class="muted">You have not submitted a research paper yet.</p>
+    @endforelse
+</div>
 @endsection

@@ -57,6 +57,12 @@
                             <div class="col-8"><div class="body">
                                 <h3 class="h5 mb-1">{{ $person['name'] }}</h3>
                                 <p class="mb-1"><strong>{{ $person['designation'] }}</strong></p>
+                                @if (($person['role_label'] ?? '') !== '' && $person['role_label'] !== $person['designation'])
+                                    <p class="muted small mb-1">{{ $person['role_label'] }}</p>
+                                @endif
+                                @if (! empty($person['department']))
+                                    <p class="muted small mb-1">{{ $person['department'] }}</p>
+                                @endif
                                 @if ($person['bio'])<p class="small">{{ $person['bio'] }}</p>@endif
                                 @if ($person['email'] || $person['phone'])
                                     <p class="small mb-0">

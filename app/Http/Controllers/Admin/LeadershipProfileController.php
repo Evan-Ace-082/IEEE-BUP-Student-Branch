@@ -99,11 +99,13 @@ class LeadershipProfileController extends Controller
 
     private function payload(LeadershipProfileRequest $request): array
     {
-        $data = $request->safe()->only(['role', 'name', 'designation', 'bio', 'email', 'phone', 'sort_order']);
-        $data['designation'] = $data['designation'] ?: null;
-        $data['bio'] = $data['bio'] ?: null;
-        $data['email'] = $data['email'] ?: null;
-        $data['phone'] = $data['phone'] ?: null;
+        $data = $request->safe()->only(['role', 'position_label', 'name', 'designation', 'department', 'bio', 'email', 'phone', 'sort_order']);
+        $data['position_label'] = $data['role'] === 'other' ? (($data['position_label'] ?? null) ?: null) : null;
+        $data['designation'] = ($data['designation'] ?? null) ?: null;
+        $data['department'] = ($data['department'] ?? null) ?: null;
+        $data['bio'] = ($data['bio'] ?? null) ?: null;
+        $data['email'] = ($data['email'] ?? null) ?: null;
+        $data['phone'] = ($data['phone'] ?? null) ?: null;
         $data['show_email'] = $request->boolean('show_email');
         $data['show_phone'] = $request->boolean('show_phone');
         $data['is_published'] = $request->boolean('is_published');

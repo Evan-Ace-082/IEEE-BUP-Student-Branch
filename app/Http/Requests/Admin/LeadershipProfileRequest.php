@@ -17,8 +17,10 @@ class LeadershipProfileRequest extends FormRequest
     {
         return [
             'role' => ['required', Rule::in(array_keys(LeadershipProfile::roleOptions()))],
+            'position_label' => ['nullable', 'required_if:role,other', 'string', 'max:120'],
             'name' => ['required', 'string', 'max:160'],
             'designation' => ['nullable', 'string', 'max:180'],
+            'department' => ['nullable', 'string', 'max:160'],
             'bio' => ['nullable', 'string', 'max:5000'],
             'email' => ['nullable', 'email', 'max:160'],
             'phone' => ['nullable', 'string', 'max:30'],
